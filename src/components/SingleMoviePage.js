@@ -1,4 +1,5 @@
 // import { render } from '@testing-library/react'
+import { comment } from 'postcss';
 import React, {useState, useEffect} from 'react'
 import { withRouter } from "react-router";
 
@@ -56,6 +57,26 @@ import { withRouter } from "react-router";
       })
    }
 
+   const deleteComment = (commentId) =>{
+       
+      fetch(`http://localhost:3000/movies/${movie.id}/comments/${commentId}`, {
+      method: "DELETE"
+    })
+      .then(r => r.json())
+      .then((deleteComment) => {
+
+         let arrayComments = movie.comments.map((comment) => {
+            return comment
+         })
+         let copyOfMovie = arrayComments.filter((singleMovie) => {
+            return singleMovie.id !== deleteComment.id
+         })
+         setMovie({
+            ...movie, comments: copyOfMovie
+         })
+      })
+   }
+
       let comments = movie.comments
       let {title, year, poster, id} = movie;
       return(
@@ -64,9 +85,18 @@ import { withRouter } from "react-router";
                <strong className="px-20 font-bold text-blue-400 text-xl">{title}({year})</strong>
                <img className="w-full" src ={poster} alt={id} />
                <div className = "bg-gray-200 px-2 py-4">
-      {/* (if this part is true) && (this part will execute) */}
+          {/* (if this part is true) && (this part will execute) */}
                {comments && comments.map(comment => (
-               <p>{comment.name} comments: {comment.content}.</p>
+                     <div className="flex">
+                        <p>{comment.name} comments: {comment.content}.</p>
+                        <img 
+                        src="https://img.icons8.com/external-kiranshastry-lineal-color-kiranshastry/64/000000/external-delete-multimedia-kiranshastry-lineal-color-kiranshastry.png"
+                         alt=""
+                           width="20px"
+                           height="20px"
+                           onClick={() => deleteComment(comment.id)}
+                         />
+                     </div>
                ))} 
             </div>
                </div> 
@@ -86,7 +116,7 @@ import { withRouter } from "react-router";
          value={allValues.content}
          onChange={handleAllTheInputs}
          /><br />
-         <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+         <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
             Submit
          </button>
    </form>         

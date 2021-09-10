@@ -70,6 +70,18 @@ const App = () => {
       // debugger
    }
 
+   // const deleteIndividualComment = (commnetId, movieId) => {
+   //    // console.log("from app", commnetId)
+   //    let mapMovieArray = movieArray.find((movie)=>{
+   //       return movie.id === movieId
+   //    })
+   //    let arr = mapMovieArray.comments.find((comment)=>{
+   //       return comment.id == commnetId
+   //    })
+   //    console.log(arr)
+      
+   // }
+
       return(
          <div className="App">
             <Route exact path="/">  
